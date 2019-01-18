@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<mavlink>
+    <include>common.xml</include>
+    <!-- NOTE: If the included file already contains a version tag, remove the version tag here, else uncomment to enable. -->
+	<!--<version>3</version>-->
+  
+  <!--
+      time : 2018-2-26   author: yifenglin 	修改内容：针对新的需求全部重新修改 
+	  time : 2018-10-12  author: yifenglin  修改内容：增加reaction switch
+  -->
+	<enums>
+        <!-- ardupilot specific MAV_CMD_* commands -->
+        <enum name="LED_COLOR">
+			<entry name="BLACK"      value="0"><description>Mission command to contorl led color</description></entry>
+			<entry name="RED"        value="1"><description>Mission command to contorl led color</description></entry>
+			<entry name="ORANGE"     value="2"><description>Mission command to contorl led color</description></entry>
+			<entry name="YELLOW"     value="3"><description>Mission command to contorl led color</description></entry>
+			<entry name="OLIVINE"    value="4"><description>Mission command to contorl led color</description></entry>
+			<entry name="GREEN"      value="5"><description>Mission command to contorl led color</description></entry>
+			<entry name="DARK_GREEN" value="6"><description>Mission command to contorl led color</description></entry>
+			<entry name="CYAN"       value="7"><description>Mission command to contorl led color</description></entry>
+			<entry name="INDIGO"     value="8"><description>Mission command to contorl led color</description></entry>
+			<entry name="BULE"       value="9"><description>Mission command to contorl led color</description></entry>
+			<entry name="PURPLE"     value="10"><description>Mission command to contorl led color</description></entry>
+			<entry name="MAGENTA"    value="11"><description>Mission command to contorl led color</description></entry>
+			<entry name="AMARANTH"   value="12"><description>Mission command to contorl led color</description></entry>
+			<entry name="MIXTURE"    value="13"><description>Mission command to contorl led color</description></entry>
+		</enum>
+		
+		<enum name="LED_STATE">
+			<entry name="CLOSE"     value="0"><description>Mission command to contorl led mode</description></entry>
+			<entry name="OPEN"      value="1"><description>Mission command to contorl led mode</description></entry>
+			<entry name="BLINK"     value="2"><description>Mission command to contorl led mode</description></entry>
+			<entry name="BREATHING" value="3"><description>Mission command to contorl led mode</description></entry>
+		</enum>		
+		
+		<enum name="KEY_STATE">
+			<entry name="KEY1_SHORT_PRESS"	       value="1"><description>Mission command to perform motor test</description></entry>
+			<entry name="KEY2_SHROT_PRESS"         value="2"><description>Mission command to perform motor test</description></entry>
+			<entry name="KEY1_LONG_PRESS"     	   value="4"><description>Mission command to perform motor test</description></entry>
+			<entry name="KEY2_LONG_PRESS" 		   value="8"><description>Mission command to perform motor test</description></entry>
+			<entry name="KEY1_AND_KEY2_LONG_PRESS" value="12"><description>Mission command to perform motor test</description></entry>
+		</enum>	
+
+		<enum name="ROBOT_STATE">
+			<entry name="WORKING"     	 value="1"><description>Mission command to perform motor test</description></entry>
+			<entry name="STANDBY"      	 value="2"><description>Mission command to perform motor test</description></entry>
+			<entry name="INBASESTATION"  value="3"><description>Mission command to perform motor test</description></entry>
+			<entry name="ERROT" 		 value="4"><description>Mission command to perform motor test</description></entry>
+		</enum>		
+		
+		<enum name="EnumCmdImu">
+			<entry name="IMU_OPEN"    	 	 value="1"><description>Mission command to perform motor test</description></entry>
+			<entry name="IMU_CLOSE"   	 	 value="2"><description>Mission command to perform motor test</description></entry>
+			<entry name="IMU_RESET"          value="3"><description>Mission command to perform motor test</description></entry>
+		</enum>		
+
+		<enum name="EnumCmdSystem">
+			<entry name="STM32_SHUTDOWM" 	value="1"><description>Mission command to perform motor test</description></entry>
+			<entry name="STM32_RESET"     	value="2"><description>Mission command to perform motor test</description></entry>
+			<entry name="R16_RESET"		  	value="3"><description>Mission command to perform motor test</description></entry>
+			<entry name="FAN_OPEN"		  	value="4"><description>Mission command to perform motor test</description></entry>
+			<entry name="FAN_CLOSE"		 	value="5"><description>Mission command to perform motor test</description></entry>		
+			<entry name="CALIBRATEVL6180"	value="6"><description>Mission command to perform motor test</description></entry>		
+			
+		</enum>
+		
+		<enum name="EnumPcbaChekcList">		
+			<entry name="VCC_DCDC"       value="1"><description>Mission command to perform motor test</description></entry>
+			<entry name="VCC_STM"        value="2"><description>Mission command to perform motor test</description></entry>
+			<entry name="VCC_RTC"        value="3"><description>Mission command to perform motor test</description></entry>
+			<entry name="VCC_R16_LDO"    value="4"><description>Mission command to perform motor test</description></entry>
+			<entry name="VCC_R16_PS"     value="5"><description>Mission command to perform motor test</description></entry>
+			<entry name="VCC_SENSOR"     value="6"><description>Mission command to perform motor test</description></entry>
+			<entry name="INFRA1"     	 value="7"><description>Mission command to perform motor test</description></entry>
+			<entry name="INFRA2"      	 value="8"><description>Mission command to perform motor test</description></entry>
+			<entry name="INFRA3"      	 value="9"><description>Mission command to perform motor test</description></entry>
+			<entry name="INFRA4"      	 value="10"><description>Mission command to perform motor test</description></entry>
+			<entry name="TRAY_LEFT"      value="11"><description>Mission command to perform motor test</description></entry>
+			<entry name="TRAY_RIGHT"     value="12"><description>Mission command to perform motor test</description></entry>
+			<entry name="DUST_BOX"       value="13"><description>Mission command to perform motor test</description></entry>
+			<entry name="KEY1"           value="14"><description>Mission command to perform motor test</description></entry>
+			<entry name="KEY2" 			 value="15"><description>Mission command to perform motor test</description></entry>			
+			<entry name="LED" 	   	     value="16"><description>Mission command to perform motor test</description></entry>
+			<entry name="IIC1_TEST"    	 value="17"><description>Mission command to perform motor test</description></entry>
+			<entry name="IIC2_TEST"    	 value="18"><description>Mission command to perform motor test</description></entry>
+			<entry name="WHEEL_LEFT"	 value="19"><description>Mission command to perform motor test</description></entry>
+			<entry name="WHEEL_RIGHT"    value="20"><description>Mission command to perform motor test</description></entry>
+			<entry name="FAN"      	     value="21"><description>Mission command to perform motor test</description></entry>
+			<entry name="POWER_START"    value="22"><description>Mission command to perform motor test</description></entry>
+			<entry name="VOICE"	    	 value="23"><description>Mission command to perform motor test</description></entry>
+			<entry name="RTC_FUNCTION"   value="24"><description>Mission command to perform motor test</description></entry>	
+			<entry name="FRONT_BUMPER"   value="25"><description>Mission command to perform motor test</description></entry>
+			<entry name="KEY_RESET"      value="26"><description>Mission command to perform motor test</description></entry>						
+		</enum>	
+		
+		<enum name="EnumR16ChekcList">
+			<entry name="UART"     	 value="1"><description>Mission command to perform motor test</description></entry>
+			<entry name="SPI" 		 value="2"><description>Mission command to perform motor test</description></entry>
+			<entry name="WIFI"   	 value="3"><description>Mission command to perform motor test</description></entry>
+			<entry name="EMMC" 		 value="4"><description>Mission command to perform motor test</description></entry>
+			<entry name="RAM"     	 value="5"><description>Mission command to perform motor test</description></entry>
+			<entry name="DX8"   	 value="6"><description>Mission command to perform motor test</description></entry>
+			<entry name="AUDIO"    	 value="7"><description>Mission command to perform motor test</description></entry>
+		</enum>	
+
+		<enum name="EnumChekResult">
+			<entry name="PASS"     	 value="0"><description>Mission command to perform motor test</description></entry>
+			<entry name="FAIL"     	 value="1"><description>Mission command to perform motor test</description></entry>
+		</enum>			
+		
+		<enum name="EnumR16ChekMode">
+			<entry name="PCBA_MODE"    	 value="1"><description>Mission command to perform motor test</description></entry>
+			<entry name="SEMI_MODE"	     value="2"><description>Mission command to perform motor test</description></entry>
+			<entry name="CAPPING_MODE" 	 value="3"><description>Mission command to perform motor test</description></entry>
+			<entry name="NORMAL_MODE"  	 value="4"><description>Mission command to perform motor test</description></entry>
+		</enum>	
+
+		<enum name="TEST_ITEM">
+			<entry name="WIFI_CONNECT_TEST"      value="0"><description>Mission command to contorl led color</description></entry>
+			<entry name="RF433_COMM_TEST"        value="1"><description>Mission command to contorl led color</description></entry>
+			<entry name="BATT_CHARGE_TEST"     	 value="2"><description>Mission command to contorl led color</description></entry>
+			<entry name="SPEAKER_TEST"           value="3"><description>Mission command to contorl led color</description></entry>
+			<entry name="BUMPER_SENSOR_TEST"     value="4"><description>Mission command to contorl led color</description></entry>
+			<entry name="CLIFF_SENSOR_TEST"      value="5"><description>Mission command to contorl led color</description></entry>
+			<entry name="MAGNETIC_SENSOR_TEST"   value="6"><description>Mission command to contorl led color</description></entry>
+			<entry name="IMU_SENSOR_TEST"        value="7"><description>Mission command to contorl led color</description></entry>
+			<entry name="CLEANING_MODULE_TEST"   value="8"><description>Mission command to contorl led color</description></entry>
+			<entry name="WHEEL_TEST"     	     value="9"><description>Mission command to contorl led color</description></entry>
+			<entry name="FAN_TEST"   			 value="10"><description>Mission command to contorl led color</description></entry>
+			<entry name="WORM_TEST"   			 value="11"><description>Mission command to contorl led color</description></entry>
+			<entry name="TOF_FRONT_TEST"   	     value="12"><description>Mission command to contorl led color</description></entry>
+			<entry name="TOF_BEHIND_TEST" 		 value="13"><description>Mission command to contorl led color</description></entry>
+			<entry name="STATION_CONTACT_TEST"   value="14"><description>Mission command to contorl led color</description></entry>
+			<entry name="RST_TEST"			     value="16"><description>Mission command to contorl led color</description></entry>
+			<entry name="ULTRASONIC_SENSOR_TEST" value="17"><description>Mission command to contorl led color</description></entry>
+			<entry name="WIRE_SENSOR_TEST"       value="18"><description>Mission command to contorl led color</description></entry>
+		</enum>		
+		
+		<enum name="TEST_STATE">
+			<entry name="STATE_PENDING"     value="0"><description>Mission command to contorl led mode</description></entry>
+			<entry name="STATE_OVER"        value="1"><description>Mission command to contorl led mode</description></entry>
+		</enum>
+		
+	</enums>
+	
+	<messages>
+		<message id="150" name="CMD_VELOCITY">
+			<description>This message is for SLAM Robot MapThis message contain scaled and axis aligned RAW IMU readings from 9DOF sensor setup</description>
+			<field type="int8_t" name="linear_velocity">linear velocity in yaw plane (m/sec) getting from wheels</field>
+			<field type="int8_t" name="angular_velocity">angular velocity around yaw axis (rad /sec) getting from wheels</field>
+		</message>
+
+		<message id="151" name="CMD_FAN_MOTOR_SPEED">
+			<description>fan motor speed command, from 0 to 100</description>
+			<field type="int8_t" name="fan_motor_speed">fan motor speed</field>
+		</message>	
+
+		<message id="152" name="CMD_WORM_MOTOR_SPEED">
+			<description>worm motor speed command, from -100 to 100</description>
+			<field type="int8_t" name="worm_motor_speed">worm motor speed</field>
+		</message>		
+
+		<message id="153" name="CMD_SYSTEM">
+			<description>using to control system</description>
+			<field type="uint8_t" name="cmd">See EnumCmdSystem</field>
+		</message>
+
+		<message id="154" name="VERSION">
+			<description>using to connect</description>
+			<field type="char[16]" name="mavlink_release"></field>
+			<field type="char[8]"  name="software_release"></field>
+		</message>
+
+		<message id="155" name="HEART_BEAT">
+			<description>using to connect</description>
+			<field type="uint8_t"  name="id"></field> 
+		</message>
+
+		<message id="156" name="IMU_DATA">
+			<description> imu data</description>
+			<field type="float" name="gyro_z"> rad/s </field>
+			<field type="float" name="accel_x"> m/s^2 </field>
+			<field type="float" name="accel_y"> m/s^2 </field>
+			<field type="float" name="accel_z"> m/s^2 </field>
+			<field type="float" name="yaw"> y (rad)  </field>
+			<field type="float" name="roll"> z (rad)  </field>
+			<field type="float" name="pitch"> x (rad)  </field>
+		</message>		
+
+		<message id="157" name="ODOMETRY_2D">
+			<description>This message is for SLAM Robot MapThis message contain scaled and axis aligned RAW IMU readings from 9DOF sensor setup</description>
+			<field type="uint32_t" name="timestamp">Timestamp (milliseconds since system boot)</field>
+			<field type="float" name="linear_velocity">linear velocity in yaw plane (m/sec) getting from wheels</field>
+			<field type="float" name="angular_velocity">angular velocity around yaw axis (degree /sec) getting from wheels</field>
+			<field type="float" name="x"> world coordinate x (m) getting from wheels</field>
+			<field type="float" name="y"> world coordinate y (m) getting from wheels</field>
+			<field type="float" name="yaw"> robot world coordinate x (rad) getting from wheels</field>
+		</message>
+		
+		<message id="158" name="DISTANCE_SENSOR_DATA">
+			<description> distance sensor data </description>
+			<field type="uint8_t" name="front_distance"> distance value (mm)</field>
+			<field type="uint8_t" name="behind_distance"> distance value (mm)</field>
+		</message>
+
+		<message id="159" name="MAG_SENSOR">
+			<description> feedback hall distance </description>
+			<field type="int16_t" name="model "></field>
+			<field type="float" name="angle"></field>    
+		</message>
+
+		<message id="160" name="KEY">
+			<description> send key value to robot </description>
+			<field type="uint8_t" name="value"> key value </field>
+		</message>
+
+		<message id="161" name="BATTERY">  
+			<description> include battery current and battery percent </description>
+			<field type="uint16_t" name="voltage">battery voltage (V)</field>
+			<field type="int16_t"  name="current">battery current (mA)</field>
+			<field type="uint8_t"  name="percent"> battery percent (%)</field>
+			<field type="uint8_t"  name="state"> battery state (%)</field>
+		</message>
+
+		<message id="162" name="TIME">  
+			<description> include battery current and battery percent </description>
+			<field type="uint8_t" name="Hours">Specifies the RTC Time Hour</field>
+			<field type="uint8_t" name="Minutes">Specifies the RTC Time Minutes</field>
+			<field type="uint8_t" name="Seconds">Specifies the RTC Time Seconds</field>
+			<field type="uint8_t" name="WeekDay">Specifies the RTC Date WeekDay</field>
+			<field type="uint8_t" name="Month">Specifies the RTC Date Month (in BCD format)</field>
+			<field type="uint8_t" name="Date">Specifies the RTC Date</field>
+			<field type="uint16_t" name="Year">Specifies the RTC Date Year</field>
+		</message>
+
+		<message id="163" name="SENSORS_STATE">
+			<description>sensor state of infrared sensor and bumper sensor</description>
+			<field type="uint32_t"	name="timestamp">Timestamp (milliseconds since system boot)</field>
+			<field type="uint8_t" 	name="iosensor1">[0]:dustbox [1]:sweep [2]:tray [3]:wire [4]-[7]:infra</field>
+			<field type="uint8_t" 	name="iosensor2">[0]:fornt_bumper [1]-[3]:bumper1-3 [4]-[7]:magnetism</field>
+			<field type="uint8_t" 	name="iosensor3">[0]:basestation_connect [1]:flag_dustbox_full</field>
+		</message>
+		
+
+		<message id="164" name="BUG_MOTOR_STATE">
+			<description> motor state feed back</description>	
+			<field type="uint16_t" name="wheel_motor_left_current"> left wheel motor current</field>
+			<field type="uint16_t" name="wheel_motor_right_current"> right wheel motor current</field>
+			<field type="uint16_t" name="fan_motor_current"> fan motor current</field>
+			<field type="uint16_t" name="worm_motor_current"> worm motor current</field>
+		</message>
+		
+		<message id="165" name="Motor_FG">
+			<description> motor state feed back</description>
+			<field type="int16_t" name="worm_motor_speed"> worm motor speed</field>
+			<field type="int16_t" name="fan_motor_speed"> fan motor speed</field>
+		</message>
+
+		<message id="166" name="BUG_ADC_INFRA">  
+			<description>when hardware error,range it and report </description>
+			<field type="uint16_t" name="infra1">infra1 ADC value</field>
+			<field type="uint16_t" name="infra2">infra2 ADC value</field>
+			<field type="uint16_t" name="infra3">infra3 ADC value</field>
+			<field type="uint16_t" name="infra4">infra4 ADC value</field>
+		</message>	
+
+		<message id="167" name="LED_CONTROL">  
+			<description>using to control led</description>
+			<field type="uint8_t" name="color">led color which you control</field>
+			<field type="uint8_t" name="mode">led state:open close blink breathing</field>
+			<field type="uint8_t" name="freque">freque</field>
+		</message>
+		
+		<message id="169" name="HARDWARE_ERROR">  
+			<description>when hardware error,range it and report </description>
+			<field type="uint8_t" name="motor">0 for ok,1 for warning</field>
+			<field type="uint8_t" name="sensor">0 for ok,1 for warning</field>
+		</message>	
+
+		<message id="170" name="CMD_IMU">
+			<description>using to control IMU</description>
+			<field type="uint8_t" name="cmd">See enum of EnumCmdImu</field>
+		</message>		
+
+		<!--PCBA测试项目-->
+		<message id="168" name="R16CheckList">  
+			<description>when hardware error,range it and report </description>
+			<field type="uint8_t" name="iteam">point1</field>
+			<field type="uint8_t" name="result">point2</field>
+		</message>
+		
+		<!--半成品测试项目-->
+		<message id="171" name="StartR16Test">
+			<description>using to control system</description>
+			<field type="uint8_t"  		name="mode">test mode</field>
+			<field type="uint32_t[2]" 	name="comm">communication id</field>
+			<field type="char[24]" 		name="ssid">wifi ssid</field>
+			<field type="char[24]" 		name="passwd">wifi password</field>
+		</message>
+		
+		<message id="172" name="VL6180Calibration">
+			<description>using to control system</description>
+			<field type="uint8_t"  name="offset_fornt">See EnumStartR16Test</field>
+			<field type="uint8_t"  name="offset_behind">See EnumStartR16Test</field>
+		</message>		
+		
+		<message id="173" name="PcbaCheckList">
+			<description>using to control system</description>
+			<field type="uint8_t" name="iteam">test iteam</field>
+			<field type="uint8_t" name="state">return result</field>
+			<field type="float"   name="voltage">return voltage</field>			
+		</message>	
+
+		<message id="174" name="TEST_ITEM_SETTING">
+			<description>This message is for SLAM Robot MapThis message contain scaled and axis aligned RAW IMU readings from 9DOF sensor setup</description>
+			<field type="uint16_t" name="code">linear velocity in yaw plane (m/sec) getting from wheels</field>
+            <field type="uint8_t"  name="item">angular velocity around yaw axis (rad /sec) getting from wheels</field>
+		</message>
+		
+		<message id="175" name="TEST_RUNNING">
+			 <description>This message is for SLAM Robot MapThis message contain scaled and axis aligned RAW IMU readings from 9DOF sensor setup</description>
+               <field type="uint16_t" name="code">Timestamp (milliseconds since system boot)</field>
+		</message>
+		
+		<message id="176" name="TEST_REPORTING">
+			 <description>sensor state of infrared sensor and bumper sensor</description>
+               <field type="uint8_t"  name="item">Timestamp (milliseconds since system boot)</field>
+			   <field type="uint8_t"  name="index">Timestamp (milliseconds since system boot)</field>
+               <field type="uint8_t"  name="state"></field>
+               <field type="uint8_t"  name="result"></field>
+		</message>	
+
+		<message id="177" name="TEST_GOING_ON">
+			<description>vaccum motor speed command, from 0 to 255</description>
+			<field type="uint8_t" name="code">Timestamp (milliseconds since system boot)</field>
+		</message>		
+		
+		<message id="178" name="Reaction">
+			<description>switch of reaction , 1 for open and 0 for close</description>
+			<field type="uint8_t" name="Switch">Timestamp (milliseconds since system boot)</field>
+		</message>		
+		
+	</messages>
+</mavlink>
