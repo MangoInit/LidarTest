@@ -1,0 +1,36 @@
+启动模式设置为１正常模式，不和ＳＴＭ３２任何交互
+
+
+
+# 启动节点
+
+python /data/misc/process_guard.py /data/misc/pita_proc.info &> /proc_hist.txt
+
+激光雷达识别基站
+state_machine_timer state_machine_timer_node
+pita_lidar_driver pita_lidar_driver_node
+#pita_base_driver pita_base_driver_node
+pita_imu_driver pita_imu_driver_node
+#pita_key_driver pita_key_driver_node
+pita_base_station_comm pita_base_station_comm_node
+pita_action_planner pita_action_planner_node
+map_server_node map_server
+pita_maphub pita_maphub_node
+pita_clean_system clean_system
+remote_control robot_server.py
+
+
+正常启动模式
+state_machine_timer state_machine_timer_node
+pita_lidar_driver pita_lidar_driver_node
+pita_base_driver pita_base_driver_node
+pita_imu_driver pita_imu_driver_node
+pita_key_driver pita_key_driver_node
+pita_base_station_comm pita_base_station_comm_node
+pita_action_planner pita_action_planner_node
+map_server_node map_server
+pita_maphub pita_maphub_node
+pita_clean_system clean_system
+remote_control robot_server.py
+lidar_iqc lidar_iqc_node
+

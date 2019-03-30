@@ -10,10 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     b_connect = false;		//heart beat
 
-    led_distance1 = new LED_lamp(300,240,30);
-    led_distance2 = new LED_lamp(350,240,30);
-    led_intensity1 = new LED_lamp(300,290,30);
-    led_intensity2 = new LED_lamp(350,290,30);
+    led_distance_500 = new LED_lamp(400,60,30);
+    led_distance_1000 = new LED_lamp(400,120,30);
+    led_station_discern = new LED_lamp(400,180,30);
+    led_distance_120 = new LED_lamp(400,240,30);
+    led_intensity_mode = new LED_lamp(400, 300, 30);
+    led_normal_mode = new LED_lamp(400, 360, 30);
 
     timer = new QTimer(this);
     timer->setInterval(3000);
@@ -28,10 +30,12 @@ MainWindow::~MainWindow()
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    Painter_Circle(led_distance1);
-    Painter_Circle(led_intensity1);
-    Painter_Circle(led_distance2);
-    Painter_Circle(led_intensity2);
+    Painter_Circle(led_distance_500);
+    Painter_Circle(led_station_discern);
+    Painter_Circle(led_distance_1000);
+    Painter_Circle(led_distance_120);
+    Painter_Circle(led_intensity_mode);
+    Painter_Circle(led_normal_mode);
 }
 
 void MainWindow::Painter_Circle(LED_lamp *led)
@@ -44,50 +48,57 @@ void MainWindow::Painter_Circle(LED_lamp *led)
 
 void MainWindow::show_reporting_mavlink(mavlink_message_t msg)
 {
+    //测试项结果
     if(msg.msgid == MAVLINK_MSG_ID_TEST_REPORTING)
     {
         mavlink_test_reporting_t t_reporting;
         mavlink_msg_test_reporting_decode(&msg, &t_reporting);
         qDebug() << "Reporting" << t_reporting.item << t_reporting.index <<t_reporting.result;
 
-        //display result from Lidar
         if(t_reporting.item == 16)
         {
-            if(t_reporting.index == 1)
+            if(t_reporting.result == PASS)
             {
-                if(t_reporting.result == PASS)
-                    led_distance1->LED_State = LED_lamp::Pass;
-                else if(t_reporting.result == FAIL)
-                    led_distance1->LED_State = LED_lamp::NoPass;
+                switch (t_reporting.index)
+                {
+                    case 1: led_distance_1000->LED_State = LED_lamp::Pass; break;
+                    case 2: led_distance_500->LED_State = LED_lamp::Pass; break;
+                    case 3: led_station_discern->LED_State = LED_lamp::Pass; break;
+                    case 4: led_distance_120->LED_State = LED_lamp::Pass; break;
+                    case 5: led_intensity_mode->LED_State = LED_lamp::Pass; break;
+                    case 6: led_normal_mode->LED_State = LED_lamp::Pass; break;
+                }
             }
-            else if(t_reporting.index == 2)
+            else if(t_reporting.result == FAIL)
             {
-                if(t_reporting.result == PASS)
-                    led_distance2->LED_State = LED_lamp::Pass;
-                else if(t_reporting.result == FAIL)
-                    led_distance2->LED_State = LED_lamp::NoPass;
-            }
-        }
-        else if(t_reporting.item == 17)
-        {
-            if(t_reporting.index == 1)
-            {
-                if(t_reporting.result == PASS)
-                    led_intensity1->LED_State = LED_lamp::Pass;
-                else if(t_reporting.result == FAIL)
-                    led_intensity1->LED_State = LED_lamp::NoPass;
-            }
-            else if(t_reporting.index == 2)
-            {
-                if(t_reporting.result == PASS)
-                    led_intensity2->LED_State = LED_lamp::Pass;
-                else if(t_reporting.result == FAIL)
-                    led_intensity2->LED_State = LED_lamp::NoPass;
+                switch (t_reporting.index)
+                {
+                    case 1: led_distance_1000->LED_State = LED_lamp::NoPass; break;
+                    case 2: led_distance_500->LED_State = LED_lamp::NoPass; break;
+                    case 3: led_station_discern->LED_State = LED_lamp::NoPass; break;
+                    case 4: led_distance_120->LED_State = LED_lamp::NoPass; break;
+                    case 5: led_intensity_mode->LED_State = LED_lamp::NoPass; break;
+                    case 6: led_normal_mode->LED_State = LED_lamp::NoPass; break;
+                }
+
             }
         }
     }
-
-    if(msg.msgid == MAVLINK_MSG_ID_TEST_GOING_ON)
+    else if(msg.msgid == MAVLINK_MSG_ID_TEST_RUNNING)
+    {
+        mavlink_test_running_t t_running;
+        mavlink_msg_test_running_decode(&msg, &t_running);
+        if(t_running.code == 0x01)
+        {
+            qDebug() << "Receive Test Start Signal from Robot.";
+        }
+        else if(t_running.code == 0x03)
+        {
+            qDebug() << "Receive Test End Signal from Robot.";
+        }
+    }
+    //心跳包
+    else if(msg.msgid == MAVLINK_MSG_ID_TEST_GOING_ON)
     {
         emit signal_beat();
         qDebug() << "receive a beat";
@@ -137,18 +148,19 @@ void MainWindow::on_pushButton_connect_clicked(bool checked)
 
 void MainWindow::on_pushButton_start_clicked()
 {
-    mav_udp->udp_running(1);
+    mav_udp->udp_running(MSG_Start);
 }
 
 void MainWindow::on_pushButton_finish_clicked()
 {
-    mav_udp->udp_running(3);
+    mav_udp->udp_running(MSG_End);
 
-    led_distance1->LED_State = LED_lamp::Init;
-    led_intensity1->LED_State = LED_lamp::Init;
-    led_distance2->LED_State = LED_lamp::Init;
-    led_intensity2->LED_State = LED_lamp::Init;
-
+    led_distance_500->LED_State = LED_lamp::Init;
+    led_station_discern->LED_State = LED_lamp::Init;
+    led_distance_1000->LED_State = LED_lamp::Init;
+    led_distance_120->LED_State = LED_lamp::Init;
+    led_normal_mode->LED_State = LED_lamp::Init;
+    led_intensity_mode->LED_State = LED_lamp::Init;
 }
 
 void MainWindow::mav_connected()

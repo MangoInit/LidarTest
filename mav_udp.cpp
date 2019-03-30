@@ -38,7 +38,6 @@ void MAV_UDP::udp_running(int code)
 {
     mavlink_message_t msg_running;
     mavlink_test_running_t running;
-//    running.code = 0xa5;
     running.code = code;
     mavlink_msg_test_running_encode(1,1,&msg_running,&running);
     send_mav_msg(msg_running);

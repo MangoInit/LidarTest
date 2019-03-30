@@ -8,6 +8,9 @@
 #include "mythread.h"
 #include <QMessageBox>
 
+const int MSG_Start = 1;
+const int MSG_End = 3;
+
 namespace Ui {
 class MainWindow;
 }
@@ -55,17 +58,22 @@ private:
 
     bool b_connect;
 
-    LED_lamp *led_distance1;
+    LED_lamp *led_distance_500;
 
-    LED_lamp *led_distance2;
+    LED_lamp *led_distance_1000;
 
-    LED_lamp *led_intensity1;
+    LED_lamp *led_station_discern;
 
-    LED_lamp *led_intensity2;
+    LED_lamp *led_distance_120;
+
+    LED_lamp *led_intensity_mode;
+
+    LED_lamp *led_normal_mode;
 
     QTimer *timer;
 
     QDateTime datetime;
+
 
 };
 
